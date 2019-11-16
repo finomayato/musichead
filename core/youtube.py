@@ -9,6 +9,7 @@ def is_youtube_link(text):
     return any(keyword in text for keyword in ('youtu.be', 'youtube'))
 
 
+# got from https://github.com/mabrownnyu/youtube-data-api/blob/master/youtube_api/youtube_api_utils.py#L79
 def _strip_video_id_from_url(url):
     '''Strips the video_id from YouTube URL.'''
     if '/watch?v=' in url.lower():
@@ -24,15 +25,26 @@ def _strip_video_id_from_url(url):
     return url_
 
 
+# got from https://github.com/mabrownnyu/youtube-data-api/blob/master/youtube_api/youtube_api_utils.py#L139
+def _get_url_from_video_id(video_id):
+    '''
+    Given a video id, this function returns the full URL.
+    '''
+    url = "https://youtube.com/watch?v={}".format(video_id)
+    return url
+
+
 class YouTubeConverter:
     def __init__(self):
         self._client = YouTubeDataAPI(YOUTUBE_API_KEY)
 
-    def get_title(self, link):
+    def get_search_query(self, link):
         id_ = _strip_video_id_from_url(link)
         metadata = self._client.get_video_metadata(id_)
         return metadata['video_title']
 
     def get_link(self, search_text):
-        # TODO: search in youtube for `search_text`
-        return 'Converting to YouTube link...'
+        rv = self._client.search(q=search_text, max_results=2, search_type='video', video_duration='short')
+        print(rv)
+        video = rv[0]  # for simplicity - getting a first one
+        return _get_url_from_video_id(video['video_id'])
