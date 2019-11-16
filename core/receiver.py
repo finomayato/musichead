@@ -31,9 +31,11 @@ def _get_custom_filter(filter_expression):
 
 
 def _add_link_hanlders(dispatcher):
+    youtube_converter = YouTubeConverter()
+    spotify_converter = SpotifyConverter()
     handlers = [
-        (is_youtube_link, YouTubeConverter, [SpotifyConverter]),
-        (is_spotify_link, SpotifyConverter, [YouTubeConverter])
+        (is_youtube_link, youtube_converter, [spotify_converter]),
+        (is_spotify_link, spotify_converter, [youtube_converter])
     ]
     for handler in handlers:
         dispatcher.add_handler(
