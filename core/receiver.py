@@ -1,28 +1,49 @@
 import logging
 
 from telegram import MessageEntity
-from telegram.ext import Updater, MessageHandler, Filters
+from telegram.ext import Updater, MessageHandler, Filters, BaseFilter
+
+from core.youtube import is_youtube_link, YouTubeConverter
+from core.spotify import is_spotify_link, SpotifyConverter
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-TELEGRAM_BOT_TOKEN = '<>'
+TELEGRAM_BOT_TOKEN = '904701235:AAEQxIu051YNJ7a4bZCfssar3foJpOOkrds'
 
-updater = Updater(token=TELEGRAM_BOT_TOKEN, use_context=True)
-
-
-dispatcher = updater.dispatcher
+DefaultFilter = Filters.text & (Filters.entity(MessageEntity.URL) | Filters.entity(MessageEntity.TEXT_LINK))
 
 
-def echo(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=update.message.text)
+def _get_message_processor(converters):
+    def processor(update, context):
+        for converter in converters:
+            new_link = converter.get_link(update.message.text)
+            context.bot.send_message(chat_id=update.effective_chat.id, text=new_link)
+    return processor
 
 
-echo_handler = MessageHandler(
-    Filters.text & (Filters.entity(MessageEntity.URL) |
-                    Filters.entity(MessageEntity.TEXT_LINK)),
-    echo
-)
-dispatcher.add_handler(echo_handler)
+def _get_custom_filter(filter_expression):
+    class CustomFilter(BaseFilter):
+        def filter(self, message):
+            return filter_expression(message.text)
+
+    return CustomFilter()
 
 
-updater.start_polling()
+def _add_link_hanlders(dispatcher):
+    handlers = [
+        (is_youtube_link, [SpotifyConverter]),
+        (is_spotify_link, [YouTubeConverter])
+    ]
+    for handler in handlers:
+        dispatcher.add_handler(
+            MessageHandler(DefaultFilter & _get_custom_filter(handler[0]), _get_message_processor(handler[1]))
+        )
+
+
+if __name__ == '__main__':
+    updater = Updater(token=TELEGRAM_BOT_TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
+
+    _add_link_hanlders(dispatcher)
+
+    updater.start_polling()
