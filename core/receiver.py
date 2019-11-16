@@ -1,3 +1,4 @@
+import os
 import logging
 
 from telegram import MessageEntity
@@ -8,7 +9,7 @@ from core.spotify import is_spotify_link, SpotifyConverter
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-TELEGRAM_BOT_TOKEN = '904701235:AAEQxIu051YNJ7a4bZCfssar3foJpOOkrds'
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
 DefaultFilter = Filters.text & (Filters.entity(MessageEntity.URL) | Filters.entity(MessageEntity.TEXT_LINK))
 
