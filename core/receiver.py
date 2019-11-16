@@ -14,10 +14,10 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 DefaultFilter = Filters.text & (Filters.entity(MessageEntity.URL) | Filters.entity(MessageEntity.TEXT_LINK))
 
 
-def _get_message_processor(converters):
+def _get_message_processor(receiver_converter, converters):
     def processor(update, context):
         for converter in converters:
-            new_link = converter.get_link(update.message.text)
+            new_link = converter.get_link(receiver_converter.get_title(update.message.text))
             context.bot.send_message(chat_id=update.effective_chat.id, text=new_link)
     return processor
 
@@ -32,12 +32,13 @@ def _get_custom_filter(filter_expression):
 
 def _add_link_hanlders(dispatcher):
     handlers = [
-        (is_youtube_link, [SpotifyConverter]),
-        (is_spotify_link, [YouTubeConverter])
+        (is_youtube_link, YouTubeConverter, [SpotifyConverter]),
+        (is_spotify_link, SpotifyConverter, [YouTubeConverter])
     ]
     for handler in handlers:
         dispatcher.add_handler(
-            MessageHandler(DefaultFilter & _get_custom_filter(handler[0]), _get_message_processor(handler[1]))
+            MessageHandler(DefaultFilter & _get_custom_filter(handler[0]),
+                           _get_message_processor(handler[1], handler[2]))
         )
 
 
