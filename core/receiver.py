@@ -17,7 +17,7 @@ DefaultFilter = Filters.text & (Filters.entity(MessageEntity.URL) | Filters.enti
 def _get_message_processor(receiver_converter, converters):
     def processor(update, context):
         for converter in converters:
-            new_link = converter.get_link(receiver_converter.get_title(update.message.text))
+            new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
             context.bot.send_message(chat_id=update.effective_chat.id, text=new_link)
     return processor
 

@@ -6,7 +6,7 @@ class SpotifyConverter:
     def __init__(self):
         pass
 
-    def get_title(self, link):
+    def get_search_query(self, link):
         return 'Getting title for Spotify link...'
 
     def get_link(self, search_text):
