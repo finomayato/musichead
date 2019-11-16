@@ -7,7 +7,7 @@ def is_spotify_link(text):
 
 class SpotifyConverter:
     _client = None
-    
+
     def __init__(self):
         self._client = spotipy.Spotify()
 
