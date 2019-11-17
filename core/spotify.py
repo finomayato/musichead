@@ -19,7 +19,10 @@ class SpotifyConverter:
         self._client = spotipy.Spotify(client_credentials_manager=credentials_manager)
 
     def get_search_query(self, link):
-        return 'Getting title for Spotify link...'
+        track = self._client.track(link)
+        artist_name = track['artists'][0]['name']
+        track_name = track['name']
+        return f'{artist_name} {track_name}'
 
     def get_link(self, search_text):
         res = self._client.search(q=search_text, limit=1, type='track')
