@@ -46,7 +46,6 @@ class YouTubeConverter:
         return metadata['video_title']
 
     def get_link(self, search_text):
-        rv = self._client.search(q=search_text, max_results=2, search_type='video', video_duration='short')
-        print(rv)
+        rv = self._client.search(q=search_text, max_results=1, search_type='video')
         video = rv[0]  # for simplicity - getting a first one
         return _get_url_from_video_id(video['video_id'])
