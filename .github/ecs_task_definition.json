@@ -58,7 +58,7 @@
         "dockerLabels": null,
         "systemControls": null,
         "privileged": null,
-        "name": "sample-app"
+        "name": "mh-1-container"
       }
     ],
     "placementConstraints": [],
