@@ -1,6 +1,7 @@
 {
     "family": "mh-1-listen", 
     "networkMode": "awsvpc", 
+    "executionRoleArn": "arn:aws:iam::519550959950:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
             "name": "mh-1-container", 
