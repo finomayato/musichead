@@ -21,8 +21,14 @@ def _get_message_processor(receiver_converter, converters):
     def processor(update, context):
         log.info(f'Got "{update.message.text}"')
         for converter in converters:
-            new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
-            log.info(f'Link "{update.message.text}" was converted to "{new_link}"')
+            try:
+                new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
+            except Exception:
+                logging.exception(f'{update.message.text} was not converted to {converter.service_name} link')
+                new_link = (f"Sorry, I wan't able to find a link in {converter.service_name.capitalize()}. "
+                            "But don't worry, I logged this link for my creator to improve me!")
+            else:
+                log.info(f'Link "{update.message.text}" was converted to "{new_link}"')
             context.bot.send_message(chat_id=update.effective_chat.id, text=new_link)
     return processor
 
