@@ -8,6 +8,9 @@ from core.youtube import is_youtube_link, YouTubeConverter
 from core.spotify import is_spotify_link, SpotifyConverter
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+log = logging.getLogger(__name__)
+log.setLevel(logging.INFO)
+
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
@@ -16,8 +19,10 @@ DefaultFilter = Filters.text & (Filters.entity(MessageEntity.URL) | Filters.enti
 
 def _get_message_processor(receiver_converter, converters):
     def processor(update, context):
+        log.info(f'Got "{update.message.text}"')
         for converter in converters:
             new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
+            log.info(f'Link "{update.message.text}" was converted to "{new_link}"')
             context.bot.send_message(chat_id=update.effective_chat.id, text=new_link)
     return processor
 
