@@ -4,7 +4,25 @@
     "executionRoleArn": "arn:aws:iam::519550959950:role/ecsTaskExecutionRole",
     "containerDefinitions": [
         {
-            "name": "mh-1-container", 
+            "name": "mh-1-container",
+            "secrets": [
+                {
+                    "name": "TELEGRAM_BOT_TOKEN",
+                    "valueFrom": "arn:aws:ssm:us-east-1:519550959950:parameter/mh-1/telegram_bot_api"
+                },
+                {
+                    "name": "SPOTIFY_CLIENT_SECRET",
+                    "valueFrom": "arn:aws:ssm:region:aws_account_id:parameter/mh-1/spotify_client_secret"
+                },
+                {
+                    "name": "SPOTIFY_CLIENT_ID",
+                    "valueFrom": "arn:aws:ssm:region:aws_account_id:parameter/mh-1/spotify_client_id"
+                },
+                {
+                    "name": "YOUTUBE_API_KEY",
+                    "valueFrom": "arn:aws:ssm:region:aws_account_id:parameter/mh-1/youtube_api_key"
+                }
+            ],
             "essential": true, 
             "entryPoint": [
                 "sh",
