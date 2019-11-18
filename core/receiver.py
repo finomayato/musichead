@@ -7,7 +7,7 @@ from telegram.ext import Updater, MessageHandler, Filters, BaseFilter
 from core.youtube import is_youtube_link, YouTubeConverter
 from core.spotify import is_spotify_link, SpotifyConverter
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 
