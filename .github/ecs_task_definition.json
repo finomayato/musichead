@@ -11,7 +11,7 @@
                 "-c"
             ], 
             "command": [
-                "/bin/sh -c \"make run\""
+                "/bin/sh -c \"export PYTHONPATH=. && python core/receiver.py\""
             ],
             "logConfiguration": {
                 "logDriver": "awslogs",
