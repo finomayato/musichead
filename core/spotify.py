@@ -12,6 +12,8 @@ def is_spotify_link(text):
 
 
 class SpotifyConverter:
+    service_name = 'spotify'
+
     _client = None
 
     def __init__(self):

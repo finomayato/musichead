@@ -35,6 +35,8 @@ def _get_url_from_video_id(video_id):
 
 
 class YouTubeConverter:
+    service_name = 'youtube'
+
     _client = None
 
     def __init__(self):
