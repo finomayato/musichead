@@ -25,7 +25,7 @@ def _get_message_processor(receiver_converter, converters):
                 new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
             except Exception:
                 logging.exception(f'{update.message.text} was not converted to {converter.service_name} link')
-                new_link = (f"Sorry, I wan't able to find a link in {converter.service_name.capitalize()}. "
+                new_link = (f"Sorry, I wasn't able to find a link in {converter.service_name.capitalize()}. "
                             "But don't worry, I logged this link for my creator to improve me!")
             else:
                 log.info(f'Link "{update.message.text}" was converted to "{new_link}"')
