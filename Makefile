@@ -1,3 +1,3 @@
 run: SHELL:=/bin/bash
 run:
-	PYTHONPATH=. && source .env && python core/receiver.py
+	export PYTHONPATH=. && source .env && python core/receiver.py
