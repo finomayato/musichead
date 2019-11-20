@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 @dataclass
 class TrackMetadata:
-    full_title: Optional[str] = None
+    _full_title: Optional[str] = None
     name: Optional[str] = None
     artist: Optional[str] = None
     albom: Optional[str] = None
@@ -17,3 +17,7 @@ class TrackMetadata:
             return f'{self.artist} {self.name}'
         else:
             raise ValueError('Metdata does not posses enough information to get full name of the track')
+
+    @full_title.setter
+    def full_title(self, full_title):
+        self._full_title = full_title
