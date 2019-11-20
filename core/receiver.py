@@ -22,7 +22,7 @@ def _get_message_processor(receiver_converter, converters):
         log.info(f'Got "{update.message.text}"')
         for converter in converters:
             try:
-                new_link = converter.get_link(receiver_converter.get_search_query(update.message.text))
+                new_link = converter.get_link(receiver_converter.get_track_metadata(update.message.text))
             except Exception:
                 logging.exception(f'{update.message.text} was not converted to {converter.service_name} link')
                 new_link = (f"Sorry, I wasn't able to find a link in {converter.service_name.capitalize()}. "
