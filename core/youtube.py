@@ -2,6 +2,8 @@ import os
 
 from youtube_api import YouTubeDataAPI
 
+from .track import TrackMetadata
+
 YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY')
 
 
@@ -42,12 +44,15 @@ class YouTubeConverter:
     def __init__(self):
         self._client = YouTubeDataAPI(YOUTUBE_API_KEY)
 
-    def get_search_query(self, link):
+    def get_track_metadata(self, link):
         id_ = _strip_video_id_from_url(link)
         metadata = self._client.get_video_metadata(id_)
-        return metadata['video_title']
+        return TrackMetadata(metadata['video_title'])
 
-    def get_link(self, search_text):
-        rv = self._client.search(q=search_text, max_results=1, search_type='video')
+    def _format_search_query(self, track_metadata):
+        return track_metadata.full_title
+
+    def get_link(self, track_metadata):
+        rv = self._client.search(q=self._format_search_query(track_metadata), max_results=1, search_type='video')
         video = rv[0]  # for simplicity - getting a first one
         return _get_url_from_video_id(video['video_id'])
