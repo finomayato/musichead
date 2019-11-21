@@ -37,11 +37,11 @@ def _get_url_from_video_id(video_id):
     return url
 
 
-def _clean_video_title(self, video_title):
+def clean_video_title(video_title):
     # Ed Sheeran - Beautiful People (feat. Khalid) [Official Video]
     # Lizzo - Good As Hell (Official Video)
     pollution_words_group = r'(?:official|video)'
-    search_pattern = rf'(?:\(.*{pollution_words_group}.*\)|\[.*{pollution_words_group}.*\])'
+    search_pattern = rf'(?:\(.*{pollution_words_group}.*\)|\[.*{pollution_words_group}.*\]|\|.*)'
     compiled_pattern = re.compile(search_pattern, re.IGNORECASE)
     return re.sub(compiled_pattern, lambda x: '', video_title).strip()
 
@@ -57,7 +57,7 @@ class YouTubeConverter:
     def get_track_metadata(self, link):
         id_ = _strip_video_id_from_url(link)
         metadata = self._client.get_video_metadata(id_)
-        return TrackMetadata(metadata['video_title'])
+        return TrackMetadata(clean_video_title(metadata['video_title']))
 
     def _format_search_query(self, track_metadata):
         return track_metadata.full_title
