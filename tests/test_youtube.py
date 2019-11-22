@@ -1,6 +1,6 @@
 import pytest
 
-from core.youtube import clean_video_title
+from core.utils import clean_video_title
 
 
 @pytest.mark.parametrize("link,cleaned_link", [
