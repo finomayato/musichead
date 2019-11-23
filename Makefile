@@ -1,6 +1,6 @@
 run: SHELL:=/bin/bash
 run:
-	export PYTHONPATH=. && source .env && python core/receiver.py
+	export PYTHONPATH=. && source .env && python -m core.receiver
 
 test:
-	export PYTHONPATH=. && pytest
+	export PYTHONPATH=. && pytest && flake8 . && mypy .
